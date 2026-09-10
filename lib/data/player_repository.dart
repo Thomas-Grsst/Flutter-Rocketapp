@@ -20,6 +20,7 @@ class PlayerRepository {
       team: _extractField(wikitext, 'team') ?? 'Sans équipe',
       status: _extractField(wikitext, 'status') ?? 'Inconnu',
       birthDate: _extractField(wikitext, 'birth_date'),
+      achievements: _extractAchievements(wikitext),
     );
   }
 
@@ -33,5 +34,35 @@ class PlayerRepository {
     }
 
     return value;
+  }
+
+  List<String> _extractAchievements(String wikitext) {
+    final pattern = RegExp(r'\|achievements=(.*?)\n(?=\||\})', dotAll: true);
+    final match = pattern.firstMatch(wikitext);
+
+    if (match == null) {
+      return [];
+    }
+
+    final raw = match.group(1) ?? '';
+
+    return raw
+        .split('\n')
+        .map(_cleanWikiText)
+        .where((line) => line.isNotEmpty)
+        .toList();
+  }
+
+  String _cleanWikiText(String text) {
+    var cleaned = text.replaceAll(RegExp(r'\{\{[^{}]*\}\}'), '');
+
+    cleaned = cleaned.replaceAllMapped(
+      RegExp(r'\[\[([^\]|]*)\|?([^\]]*)\]\]'),
+      (m) => (m.group(2)?.isNotEmpty ?? false) ? m.group(2)! : m.group(1)!,
+    );
+
+    cleaned = cleaned.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+    return cleaned;
   }
 }

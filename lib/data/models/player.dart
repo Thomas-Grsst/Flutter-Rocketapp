@@ -5,6 +5,7 @@ class Player {
   final String team;
   final String status;
   final String? birthDate;
+  final List<String> achievements;
 
   Player({
     required this.id,
@@ -12,6 +13,7 @@ class Player {
     required this.country,
     required this.team,
     required this.status,
+    required this.achievements,
     this.birthDate,
   });
 }
