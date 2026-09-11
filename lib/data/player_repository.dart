@@ -1,3 +1,4 @@
+import 'game_data.dart';
 import 'liquipedia_api.dart';
 import 'models/player.dart';
 
@@ -17,7 +18,7 @@ class PlayerRepository {
       id: _extractField(wikitext, 'id') ?? pageName,
       name: _extractField(wikitext, 'name') ?? pageName,
       country: _extractField(wikitext, 'country') ?? 'Inconnu',
-      team: _extractField(wikitext, 'team') ?? 'Sans équipe',
+      team: _extractField(wikitext, 'team') ?? noTeamFallback,
       status: _extractField(wikitext, 'status') ?? 'Inconnu',
       birthDate: _extractField(wikitext, 'birth_date'),
       achievements: _extractAchievements(wikitext),

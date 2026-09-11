@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/player_repository.dart';
+import 'guess_team_page.dart';
 import 'player_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -54,28 +55,36 @@ class _SearchPageState extends State<SearchPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.sports_esports, color: theme.colorScheme.primary),
+            const SizedBox(width: 10),
+            const Text('Rocket Stats'),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: "Devine l'équipe",
+            icon: const Icon(Icons.videogame_asset),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GuessTeamPage(repository: widget.repository),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.sports_esports,
-                    color: theme.colorScheme.primary,
-                    size: 32,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Rocket Stats',
-                    style: theme.textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
               Text(
                 'Recherche un joueur professionnel Rocket League',
                 style: theme.textTheme.bodyMedium
